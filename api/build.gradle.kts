@@ -8,6 +8,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 kotlin {
@@ -37,7 +38,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-server-netty:1.4.0")
-                implementation(project(":codegen"))
+                implementation("it.krzeminski.kotlinrpc:kotlin-rpc:1.0-SNAPSHOT")
             }
             kotlin.srcDirs(kotlin.srcDirs, "$buildDir/jvm/generated/")
         }
