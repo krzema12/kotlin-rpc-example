@@ -53,21 +53,21 @@ kotlin {
     }
 }
 
-val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsClient") {
+val generateTodoAppApiJsProxy = tasks.register<JavaExec>("generateTodoAppApiJsClient") {
     group = "build"
-    description = "Generate ZooApi JS proxy"
+    description = "Generate TodoApp JS proxy"
     classpath = sourceSets["main"].runtimeClasspath
     main = "it.krzeminski.kotlinrpc.api.generation.JsClientGenerationKt"
-    args("it.krzeminski.zoo.api.ZooApi", "$buildDir/js/generated")
+    args("it.krzeminski.todoapp.api.TodoAppApi", "$buildDir/js/generated")
 }
 
-val generateZooApiJvmKtorServer = tasks.register<JavaExec>("generateZooApiJvmKtorServer") {
+val generateTodoAppApiJvmKtorServer = tasks.register<JavaExec>("generateTodoAppApiJvmKtorServer") {
     group = "build"
-    description = "Generate ZooApi JVM Ktor server"
+    description = "Generate TodoApp JVM Ktor server"
     classpath = sourceSets["main"].runtimeClasspath
     main = "it.krzeminski.kotlinrpc.api.generation.JvmKtorServerGenerationKt"
-    args("it.krzeminski.zoo.api.ZooApi", "$buildDir/jvm/generated")
+    args("it.krzeminski.todoapp.api.TodoAppApi", "$buildDir/jvm/generated")
 }
 
-tasks.getByName("jvmJar").dependsOn(generateZooApiJvmKtorServer)
-tasks.getByName("jsJar").dependsOn(generateZooApiJsProxy)
+tasks.getByName("jvmJar").dependsOn(generateTodoAppApiJvmKtorServer)
+tasks.getByName("jsJar").dependsOn(generateTodoAppApiJsProxy)

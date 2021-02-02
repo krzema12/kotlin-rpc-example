@@ -106,7 +106,7 @@ application {
     mainClassName = "ServerKt"
 }
 tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
-    outputFileName = "zoo.js"
+    outputFileName = "todoapp.js"
 }
 tasks.getByName<Jar>("jvmJar") {
     dependsOn(tasks.getByName("jsBrowserProductionWebpack"))

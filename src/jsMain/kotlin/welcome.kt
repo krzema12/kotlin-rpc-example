@@ -1,4 +1,4 @@
-import it.krzeminski.zoo.api.TestDataClass
+import it.krzeminski.todoapp.api.Todo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -13,42 +13,33 @@ import react.dom.input
 import react.setState
 
 external interface WelcomeState : RState {
-    var zoosFromBackend: String?
+    var todos: List<Todo>
 }
 
 class Welcome : RComponent<RProps, WelcomeState>(), CoroutineScope by MainScope() {
 
     override fun RBuilder.render() {
         div {
-            +"From backend: ${state.zoosFromBackend}"
+            +"From backend: ${state.todos}"
         }
         input(type = InputType.button) {
             attrs {
-                value = "Call backend"
+                value = "Fetch TODOs"
                 onClickFunction = {
                     launch {
-                        fetchZoosFromBackend()
+                        fetchTodos()
                     }
                 }
             }
         }
     }
 
-    private suspend fun fetchZoosFromBackend() {
-        with(ZooApiJsClient(url = "http://localhost:8080", coroutineContext)) {
+    private suspend fun fetchTodos() {
+        with(TodoAppApiJsClient(url = "http://localhost:8080", coroutineContext)) {
             launch {
-                val zoosFromBackendFetched = someFunction(
-                    intArg = 123,
-                    dataClassArg = TestDataClass(
-                        stringField = "FooBar!",
-                        optionalIntField = 987,
-                    ),
-                    listArg = listOf(true, false, true, false),
-                )
+                val fetchedTodos = listTodos()
                 setState {
-                    zoosFromBackend = zoosFromBackendFetched.joinToString {
-                        it.toString()
-                    }
+                    todos = fetchedTodos
                 }
             }
         }
