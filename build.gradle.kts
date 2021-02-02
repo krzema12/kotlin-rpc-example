@@ -31,7 +31,9 @@ repositories {
     maven {
         url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers")
     }
-    mavenLocal()
+    maven {
+        url = uri("https://dl.bintray.com/krzema1212/it.krzeminski")
+    }
 }
 kotlin {
     jvm {

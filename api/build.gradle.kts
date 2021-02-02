@@ -8,7 +8,9 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    mavenLocal()
+    maven {
+        url = uri("https://dl.bintray.com/krzema1212/it.krzeminski")
+    }
 }
 
 kotlin {
@@ -38,7 +40,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-server-netty:1.4.0")
-                implementation("it.krzeminski.kotlinrpc:kotlin-rpc:1.0-SNAPSHOT")
+                implementation("it.krzeminski.kotlinrpc:kotlin-rpc:0.1.3")
             }
             kotlin.srcDirs(kotlin.srcDirs, "$buildDir/jvm/generated/")
         }
@@ -55,7 +57,7 @@ val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsClient") {
     group = "build"
     description = "Generate ZooApi JS proxy"
     classpath = sourceSets["main"].runtimeClasspath
-    main = "it.krzeminski.zoo.api.generation.JsClientGenerationKt"
+    main = "it.krzeminski.kotlinrpc.api.generation.JsClientGenerationKt"
     args("it.krzeminski.zoo.api.ZooApi", "$buildDir/js/generated")
 }
 
@@ -63,7 +65,7 @@ val generateZooApiJvmKtorServer = tasks.register<JavaExec>("generateZooApiJvmKto
     group = "build"
     description = "Generate ZooApi JVM Ktor server"
     classpath = sourceSets["main"].runtimeClasspath
-    main = "it.krzeminski.zoo.api.generation.JvmKtorServerGenerationKt"
+    main = "it.krzeminski.kotlinrpc.api.generation.JvmKtorServerGenerationKt"
     args("it.krzeminski.zoo.api.ZooApi", "$buildDir/jvm/generated")
 }
 
