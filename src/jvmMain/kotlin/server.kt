@@ -27,7 +27,11 @@ fun main() {
         override suspend fun listTodos() = todos
 
         override suspend fun addToList(description: String): List<Todo> {
-            TODO("Not yet implemented")
+            todos.add(Todo(
+                description = description,
+                isDone = false,
+            ))
+            return todos
         }
     }
 
