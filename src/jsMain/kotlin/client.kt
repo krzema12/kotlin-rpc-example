@@ -4,12 +4,18 @@ import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.html.INPUT
+import kotlinx.html.InputType
+import kotlinx.html.js.onChangeFunction
+import kotlinx.html.js.onClickFunction
+import org.w3c.dom.HTMLInputElement
 import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
 import react.dom.div
 import react.dom.h1
+import react.dom.input
 import react.dom.li
 import react.dom.render
 import react.dom.ul
@@ -34,6 +40,7 @@ fun main() {
 
 external interface TodoAppState : RState {
     var todos: List<Todo>
+    var newTodoDescription: String
 }
 
 class TodoApp : RComponent<RProps, TodoAppState>(), CoroutineScope by MainScope() {
@@ -58,11 +65,42 @@ class TodoApp : RComponent<RProps, TodoAppState>(), CoroutineScope by MainScope(
         } else {
             div { +"No TODOs!" }
         }
+        input {
+          attrs {
+              value = state.newTodoDescription
+              onChangeFunction = { event ->
+                  val newValue = (event.target as HTMLInputElement).value
+                  setState {
+                      newTodoDescription = newValue
+                  }
+              }
+          }
+        }
+        input(type = InputType.button) {
+            attrs {
+                value = "Add"
+                onClickFunction = {
+                    addNewTodoAndUpdateList()
+                }
+            }
+        }
     }
 
     private fun fetchTodos() {
         with(TodoAppApiJsClient(url = "http://localhost:8080", coroutineContext)) {
             launch {
+                val fetchedTodos = listTodos()
+                setState {
+                    todos = fetchedTodos
+                }
+            }
+        }
+    }
+
+    private fun addNewTodoAndUpdateList() {
+        with(TodoAppApiJsClient(url = "http://localhost:8080", coroutineContext)) {
+            launch {
+                addToList(state.newTodoDescription)
                 val fetchedTodos = listTodos()
                 setState {
                     todos = fetchedTodos
